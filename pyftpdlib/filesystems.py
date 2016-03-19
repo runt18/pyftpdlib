@@ -480,14 +480,14 @@ class AbstractedFS(object):
             else:
                 fmtstr = "%d %H:%M"
             try:
-                mtimestr = "%s %s" % (_months_map[mtime.tm_mon],
+                mtimestr = "{0!s} {1!s}".format(_months_map[mtime.tm_mon],
                                       time.strftime(fmtstr, mtime))
             except ValueError:
                 # It could be raised if last mtime happens to be too
                 # old (prior to year 1900) in which case we return
                 # the current time as last mtime.
                 mtime = timefunc()
-                mtimestr = "%s %s" % (_months_map[mtime.tm_mon],
+                mtimestr = "{0!s} {1!s}".format(_months_map[mtime.tm_mon],
                                       time.strftime("%d %H:%M", mtime))
 
             # same as stat.S_ISLNK(st.st_mode) but slighlty faster
@@ -502,7 +502,7 @@ class AbstractedFS(object):
                         raise
 
             # formatting is matched with proftpd ls output
-            line = "%s %3s %-8s %-8s %8s %s %s\r\n" % (
+            line = "{0!s} {1:3!s} {2:<8!s} {3:<8!s} {4:8!s} {5!s} {6!s}\r\n".format(
                 perms, nlinks, uname, gname, size, mtimestr, basename)
             yield line.encode('utf8', self.cmd_channel.unicode_errors)
 
@@ -632,12 +632,12 @@ class AbstractedFS(object):
             # platforms should use some platform-specific method (e.g.
             # on Windows NTFS filesystems MTF records could be used).
             if show_unique:
-                retfacts['unique'] = "%xg%x" % (st.st_dev, st.st_ino)
+                retfacts['unique'] = "{0:x}g{1:x}".format(st.st_dev, st.st_ino)
 
             # facts can be in any order but we sort them by name
-            factstring = "".join(["%s=%s;" % (x, retfacts[x])
+            factstring = "".join(["{0!s}={1!s};".format(x, retfacts[x])
                                   for x in sorted(retfacts.keys())])
-            line = "%s %s\r\n" % (factstring, basename)
+            line = "{0!s} {1!s}\r\n".format(factstring, basename)
             yield line.encode('utf8', self.cmd_channel.unicode_errors)
 
 

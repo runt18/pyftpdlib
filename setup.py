@@ -85,7 +85,7 @@ def hilite(s, ok=True, bold=False):
             attr.append('31')
         if bold:
             attr.append('1')
-        return '\x1b[%sm%s\x1b[0m' % (';'.join(attr), s)
+        return '\x1b[{0!s}m{1!s}\x1b[0m'.format(';'.join(attr), s)
 
 
 if sys.version_info < (2, 4):

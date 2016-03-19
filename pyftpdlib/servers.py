@@ -169,7 +169,7 @@ class FTPServer(Acceptor):
             _config_logging()
 
         if self.handler.passive_ports:
-            pasv_ports = "%s->%s" % (self.handler.passive_ports[0],
+            pasv_ports = "{0!s}->{1!s}".format(self.handler.passive_ports[0],
                                      self.handler.passive_ports[-1])
         else:
             pasv_ports = None
@@ -178,8 +178,7 @@ class FTPServer(Acceptor):
             proto = "FTP+SSL"
         else:
             proto = "FTP"
-        logger.info(">>> starting %s server on %s:%s, pid=%i <<<"
-                    % (proto, addr[0], addr[1], os.getpid()))
+        logger.info(">>> starting {0!s} server on {1!s}:{2!s}, pid={3:d} <<<".format(proto, addr[0], addr[1], os.getpid()))
         logger.info("poller: %r", self.ioloop.__class__)
         logger.info("masquerade (NAT) address: %s",
                     self.handler.masquerade_address)
@@ -472,7 +471,7 @@ class _SpawnerBase(FTPServer):
                 # in case also other threads/processes are hanging.
                 self.join_timeout = None
                 if hasattr(t, 'terminate'):
-                    msg = "could not terminate process %r" % t
+                    msg = "could not terminate process {0!r}".format(t)
                     if not _BSD:
                         warn(msg + "; sending SIGKILL as last resort")
                         try:

@@ -50,9 +50,9 @@ class CustomizedOptionFormatter(optparse.IndentedHelpFormatter):
     def format_option(self, option):
         result = []
         opts = self.option_strings[option]
-        result.append('  %s\n' % opts)
+        result.append('  {0!s}\n'.format(opts))
         if option.help:
-            help_text = '     %s\n\n' % self.expand_default(option)
+            help_text = '     {0!s}\n\n'.format(self.expand_default(option))
             result.append(help_text)
         return ''.join(result)
 
@@ -85,7 +85,7 @@ def main():
 
     options, args = parser.parse_args()
     if options.version:
-        sys.exit("pyftpdlib %s" % __ver__)
+        sys.exit("pyftpdlib {0!s}".format(__ver__))
     if options.verbose:
         import logging
         import pyftpdlib.log

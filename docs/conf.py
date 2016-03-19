@@ -77,7 +77,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = PROJECT_NAME
-copyright = u('2009-%s, %s' % (THIS_YEAR, AUTHOR))
+copyright = u('2009-{0!s}, {1!s}'.format(THIS_YEAR, AUTHOR))
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -208,7 +208,7 @@ html_use_index = True
 # html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = '%s-doc' % PROJECT_NAME
+htmlhelp_basename = '{0!s}-doc'.format(PROJECT_NAME)
 
 # -- Options for LaTeX output ------------------------------------------------
 
@@ -222,7 +222,7 @@ htmlhelp_basename = '%s-doc' % PROJECT_NAME
 # (source start file, target name, title, author, documentclass
 # [howto/manual]).
 latex_documents = [
-    ('index', '%s.tex' % PROJECT_NAME,
+    ('index', '{0!s}.tex'.format(PROJECT_NAME),
      u('%s documentation') % PROJECT_NAME, AUTHOR),
 ]
 
