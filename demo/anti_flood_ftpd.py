@@ -75,8 +75,8 @@ class AntiFloodHandler(FTPHandler):
     def ban(self, ip):
         # ban ip and schedule next un-ban
         if ip not in self.banned_ips:
-            self.log('banned IP %s for command flooding' % ip)
-        self.respond('550 You are banned for %s seconds.' % self.ban_for)
+            self.log('banned IP {0!s} for command flooding'.format(ip))
+        self.respond('550 You are banned for {0!s} seconds.'.format(self.ban_for))
         self.close()
         self.banned_ips.append(ip)
 
@@ -87,7 +87,7 @@ class AntiFloodHandler(FTPHandler):
         except ValueError:
             pass
         else:
-            self.log('unbanning IP %s' % ip)
+            self.log('unbanning IP {0!s}'.format(ip))
 
     def close(self):
         FTPHandler.close(self)

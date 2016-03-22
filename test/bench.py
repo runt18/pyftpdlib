@@ -151,18 +151,18 @@ else:
             attr.append('31')
         if bold:
             attr.append('1')
-        return '\x1b[%sm%s\x1b[0m' % (';'.join(attr), string)
+        return '\x1b[{0!s}m{1!s}\x1b[0m'.format(';'.join(attr), string)
 
 
 server_memory = []
 
 
 def print_bench(what, value, unit=""):
-    s = "%s %s %-8s" % (hilite("%-50s" % what, ok=None, bold=0),
-                        hilite("%8.2f" % value),
+    s = "{0!s} {1!s} {2:<8!s}".format(hilite("{0:<50!s}".format(what), ok=None, bold=0),
+                        hilite("{0:8.2f}".format(value)),
                         unit)
     if server_memory:
-        s += "%s" % hilite(server_memory.pop())
+        s += "{0!s}".format(hilite(server_memory.pop()))
     print_(s.strip())
 
 
@@ -418,17 +418,17 @@ class OptFormatter(optparse.IndentedHelpFormatter):
     def format_option(self, option):
         result = []
         opts = self.option_strings[option]
-        result.append('  %s\n' % opts)
+        result.append('  {0!s}\n'.format(opts))
         if option.help:
-            help_text = '     %s\n\n' % self.expand_default(option)
+            help_text = '     {0!s}\n\n'.format(self.expand_default(option))
             result.append(help_text)
         return ''.join(result)
 
 
 def main():
     global HOST, PORT, USER, PASSWORD, SERVER_PROC, TIMEOUT
-    USAGE = "%s -u USERNAME -p PASSWORD [-H] [-P] [-b] [-n] [-s] [-k]" % (
-        __file__)
+    USAGE = "{0!s} -u USERNAME -p PASSWORD [-H] [-P] [-b] [-n] [-s] [-k]".format((
+        __file__))
     parser = optparse.OptionParser(usage=USAGE,
                                    epilog=__doc__[__doc__.find('Example'):],
                                    formatter=OptFormatter())
@@ -466,7 +466,7 @@ def main():
         try:
             FILE_SIZE = human2bytes(options.filesize)
         except (ValueError, AssertionError):
-            parser.error("invalid file size %r" % options.filesize)
+            parser.error("invalid file size {0!r}".format(options.filesize))
         if options.pid is not None:
             if psutil is None:
                 raise ImportError("-p option requires psutil module")
@@ -491,7 +491,7 @@ def main():
             resource.setrlimit(resource.RLIMIT_NOFILE, (hard, hard))
 
         def bench_multi_connect():
-            with timethis("%i concurrent clients (connect, login)" % howmany):
+            with timethis("{0:d} concurrent clients (connect, login)".format(howmany)):
                 clients = []
                 for x in range(howmany):
                     clients.append(connect())
@@ -500,7 +500,7 @@ def main():
 
         def bench_multi_retr(clients):
             stor(clients[0], FILE_SIZE)
-            with timethis("%s concurrent clients (RETR %s file)" % (
+            with timethis("{0!s} concurrent clients (RETR {1!s} file)".format(
                     howmany, bytes2human(FILE_SIZE))):
                 for ftp in clients:
                     ftp.voidcmd('TYPE I')
@@ -512,7 +512,7 @@ def main():
                 ftp.voidresp()
 
         def bench_multi_stor(clients):
-            with timethis("%s concurrent clients (STOR %s file)" % (
+            with timethis("{0!s} concurrent clients (STOR {1!s} file)".format(
                     howmany, bytes2human(FILE_SIZE))):
                 for ftp in clients:
                     ftp.voidcmd('TYPE I')
@@ -526,12 +526,12 @@ def main():
         def bench_multi_quit(clients):
             for ftp in clients:
                 AsyncQuit(ftp.sock)
-            with timethis("%i concurrent clients (QUIT)" % howmany):
+            with timethis("{0:d} concurrent clients (QUIT)".format(howmany)):
                 asyncore.loop(use_poll=True)
 
         clients = bench_multi_connect()
-        bench_stor("STOR (1 file with %s idle clients)" % len(clients))
-        bench_retr("RETR (1 file with %s idle clients)" % len(clients))
+        bench_stor("STOR (1 file with {0!s} idle clients)".format(len(clients)))
+        bench_retr("RETR (1 file with {0!s} idle clients)".format(len(clients)))
         bench_multi_retr(clients)
         bench_multi_stor(clients)
         bench_multi_quit(clients)
@@ -548,8 +548,8 @@ def main():
     # start benchmark
     if SERVER_PROC is not None:
         register_memory()
-        print_("(starting with %s of memory being used)" % (
-            hilite(server_memory.pop())))
+        print_("(starting with {0!s} of memory being used)".format((
+            hilite(server_memory.pop()))))
     if options.benchmark == 'transfer':
         bench_stor()
         bench_retr()
@@ -560,7 +560,7 @@ def main():
         bench_retr()
         bench_multi()
     else:
-        sys.exit("invalid 'benchmark' parameter %r" % options.benchmark)
+        sys.exit("invalid 'benchmark' parameter {0!r}".format(options.benchmark))
 
 if __name__ == '__main__':
     main()

@@ -180,7 +180,7 @@ class _CallLater(object):
                  '_repush', 'timeout', 'cancelled')
 
     def __init__(self, seconds, target, *args, **kwargs):
-        assert callable(target), "%s is not callable" % target
+        assert callable(target), "{0!s} is not callable".format(target)
         assert MAXSIZE >= seconds >= 0, "%s is not greater than or equal " \
                                         "to 0 seconds" % seconds
         self._delay = seconds
@@ -209,10 +209,10 @@ class _CallLater(object):
             sig = object.__repr__(self)
         else:
             sig = repr(self._target)
-        sig += ' args=%s, kwargs=%s, cancelled=%s, secs=%s' % (
+        sig += ' args={0!s}, kwargs={1!s}, cancelled={2!s}, secs={3!s}'.format(
             self._args or '[]', self._kwargs or '{}', self.cancelled,
             self._delay)
-        return '<%s>' % sig
+        return '<{0!s}>'.format(sig)
 
     __str__ = __repr__
 

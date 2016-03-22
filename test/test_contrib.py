@@ -408,13 +408,13 @@ class TestFTPS(unittest.TestCase):
             why = sys.exc_info()[1]
             if str(why) == msg:
                 return
-            raise self.failureException("%s != %s" % (str(why), msg))
+            raise self.failureException("{0!s} != {1!s}".format(str(why), msg))
         else:
             if hasattr(excClass, '__name__'):
                 excName = excClass.__name__
             else:
                 excName = str(excClass)
-            raise self.failureException("%s not raised" % excName)
+            raise self.failureException("{0!s} not raised".format(excName))
 
     def test_auth(self):
         # unsecured
@@ -589,13 +589,13 @@ class _SharedAuthorizerTests(object):
             why = sys.exc_info()[1]
             if str(why) == msg:
                 return
-            raise self.failureException("%s != %s" % (str(why), msg))
+            raise self.failureException("{0!s} != {1!s}".format(str(why), msg))
         else:
             if hasattr(excClass, '__name__'):
                 excName = excClass.__name__
             else:
                 excName = str(excClass)
-            raise self.failureException("%s not raised" % excName)
+            raise self.failureException("{0!s} not raised".format(excName))
     # --- /utils
 
     def test_get_home_dir(self):
@@ -690,10 +690,10 @@ class _SharedAuthorizerTests(object):
             self.authorizer_class, rejected_users=['anonymous'])
         self.assertRaisesWithMsg(
             AuthorizerError,
-            'unknown user %s' % wrong_user,
+            'unknown user {0!s}'.format(wrong_user),
             self.authorizer_class, allowed_users=[wrong_user])
         self.assertRaisesWithMsg(AuthorizerError,
-                                 'unknown user %s' % wrong_user,
+                                 'unknown user {0!s}'.format(wrong_user),
                                  self.authorizer_class,
                                  rejected_users=[wrong_user])
 
@@ -765,7 +765,7 @@ class _SharedAuthorizerTests(object):
             "at least one keyword argument must be specified",
             auth.override_user, this_user)
         self.assertRaisesWithMsg(AuthorizerError,
-                                 'no such user %s' % nonexistent_user,
+                                 'no such user {0!s}'.format(nonexistent_user),
                                  auth.override_user, nonexistent_user,
                                  perm='r')
         if self.authorizer_class.__name__ == 'UnixAuthorizer':
@@ -775,7 +775,7 @@ class _SharedAuthorizerTests(object):
             auth = self.authorizer_class(allowed_users=[this_user])
         auth.override_user(this_user, perm='r')
         self.assertRaisesWithMsg(AuthorizerError,
-                                 '%s is not an allowed user' % another_user,
+                                 '{0!s} is not an allowed user'.format(another_user),
                                  auth.override_user, another_user, perm='r')
         if self.authorizer_class.__name__ == 'UnixAuthorizer':
             auth = self.authorizer_class(rejected_users=[this_user],
@@ -784,7 +784,7 @@ class _SharedAuthorizerTests(object):
             auth = self.authorizer_class(rejected_users=[this_user])
         auth.override_user(another_user, perm='r')
         self.assertRaisesWithMsg(AuthorizerError,
-                                 '%s is not an allowed user' % this_user,
+                                 '{0!s} is not an allowed user'.format(this_user),
                                  auth.override_user, this_user, perm='r')
         self.assertRaisesWithMsg(AuthorizerError,
                                  "can't assign password to anonymous user",
@@ -873,7 +873,7 @@ class TestUnixAuthorizer(_SharedAuthorizerTests, unittest.TestCase):
         user = get_fake_shell_user()
         self.assertRaisesWithMsg(
             AuthorizerError,
-            "user %s has not a valid shell" % user,
+            "user {0!s} has not a valid shell".format(user),
             authorizers.UnixAuthorizer, allowed_users=[user])
         # commented as it first fails for invalid home
         # self.assertRaisesWithMsg(
@@ -884,7 +884,7 @@ class TestUnixAuthorizer(_SharedAuthorizerTests, unittest.TestCase):
         self.assertTrue(auth._has_valid_shell(self.get_current_user()))
         self.assertFalse(auth._has_valid_shell(user))
         self.assertRaisesWithMsg(AuthorizerError,
-                                 "User %s doesn't have a valid shell." % user,
+                                 "User {0!s} doesn't have a valid shell.".format(user),
                                  auth.override_user, user, perm='r')
 
     def test_not_root(self):

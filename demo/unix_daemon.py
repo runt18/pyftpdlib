@@ -124,7 +124,7 @@ def stop():
         except OSError:
             e = sys.exc_info()[1]
             if e.errno == errno.ESRCH:
-                print_("\nstopped (pid %s)" % pid)
+                print_("\nstopped (pid {0!s})".format(pid))
                 return
             else:
                 raise
@@ -132,7 +132,7 @@ def stop():
         if i == 25:
             sig = signal.SIGKILL
         elif i == 50:
-            sys.exit("\ncould not kill daemon (pid %s)" % pid)
+            sys.exit("\ncould not kill daemon (pid {0!s})".format(pid))
         time.sleep(0.1)
 
 
@@ -142,7 +142,7 @@ def status():
     if not pid or not pid_exists(pid):
         print_("daemon not running")
     else:
-        print_("daemon running with pid %s" % pid)
+        print_("daemon running with pid {0!s}".format(pid))
     sys.exit(0)
 
 
@@ -187,13 +187,13 @@ def daemonize():
         # write pidfile
         pid = str(os.getpid())
         f = open(PID_FILE, 'w')
-        f.write("%s\n" % pid)
+        f.write("{0!s}\n".format(pid))
         f.close()
         atexit.register(lambda: os.remove(PID_FILE))
 
     pid = get_pid()
     if pid and pid_exists(pid):
-        sys.exit('daemon already running (pid %s)' % pid)
+        sys.exit('daemon already running (pid {0!s})'.format(pid))
     # instance FTPd before daemonizing, so that in case of problems we
     # get an exception here and exit immediately
     server = get_server()
